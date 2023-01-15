@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :github 
+  # before_action :github 
 
   # def github
   #   # Usernames and User Commit Totals

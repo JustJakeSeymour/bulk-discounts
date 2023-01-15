@@ -15,14 +15,6 @@
     <% end %>
     <%= yield %>
   <hr>
-  <div id="github-stats">
-    Repository Name: <%= @repo.name %><br>
-    Contributors:<br> <% @users.each do |user| %>
-      <div id=<%= "user-#{user.username}" %>>
-      Username: <%= user.username %> | Total Commits: <%= user.commit_total %> <br>
-      </div>
-    <% end %>
-    Merged Pull Requests: <%= @merged_pulls.count %><br>
-  </div>
+
   </body>
 </html>
