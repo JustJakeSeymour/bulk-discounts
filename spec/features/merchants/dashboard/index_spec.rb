@@ -185,4 +185,15 @@ RSpec.describe 'Merchant Dashboard Index', type: :feature do
       end
     end
   end
+
+  describe "Bulk Discount" do
+    describe "user story 1" do
+      it "link to view all my discounts" do
+        within ("#bulk_discounts") do
+          expect(page).to have_link("view my discounts")
+        end
+        expect(current_path).to eq(merchant_bulk_discounts_path(merchant.id))
+      end
+    end
+  end
 end
