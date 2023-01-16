@@ -22,9 +22,14 @@ class Merchants::BulkDiscountsController < ApplicationController
       flash[:alert] = "Fields cannot be blank"
       render :new
     end
-    
   end
   
+  def destroy
+    BulkDiscount.delete(params[:id])
+
+    redirect_to merchant_bulk_discounts_path(params[:merchant_id])
+  end
+
   private
   def bulk_discount_params
     params.require(:bulk_discount).permit(:percent_discount, :quantity_threshold)
