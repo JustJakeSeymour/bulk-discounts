@@ -1,9 +1,9 @@
-<h1>Create Bulk Discount for <%= @merchant.name %></h1>
+<h1>Edit <%= @merchant.name %>'s Bulk discount #<%= @bulk_discount.id %></h1>
 
 <%= form_with model: [:merchant, @bulk_discount], local: true do |form| %>
   <%= form.label :percent_discount %>
   <%= form.number_field :percent_discount, minimum: 0, maximum: 100 %>
   <%= form.label :quantity_threshold%>
   <%= form.number_field :quantity_threshold %>
-  <%= form.submit %>
+  <%= form.submit "Update Bulk discount" %>
 <% end %>
