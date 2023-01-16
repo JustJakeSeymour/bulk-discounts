@@ -31,9 +31,7 @@ RSpec.describe 'The Merchant Invoices Show page', type: :feature do
       expect(page).to have_content(customer1.first_name)
       expect(page).to have_content(customer1.last_name)
     end
-  end
 
-  describe "when I visit the merchant invoice show page" do
     it "then I see all of my items on the invoice including: name, quanity, price, status" do
       visit merchant_invoice_path(merchant1.id, invoice1.id)
 
@@ -42,32 +40,43 @@ RSpec.describe 'The Merchant Invoices Show page', type: :feature do
       expect(page).to have_content(invoice_item1.unit_price)
       expect(page).to have_content(invoice_item1.status)
     end  
-  end
 
-  describe "when I visit the merchant invoice show page" do
     it "I see the total revenue that will be generated from all of my items on the invoice" do
       visit merchant_invoice_path(merchant1, invoice1)
 
       expect(page).to have_content(invoice1.total_revenue)
     end
-  end
 
-  describe "when I visit my merchant invoice show page" do
     it "I see that each invoice item status is a select field" do
       visit merchant_invoice_path(merchant1, invoice1)
-
+      
       within "#item_#{item1.id}" do
         expect(page).to have_select(:status, selected: "pending")
       end
     end
-
+    
     it "when I click this select field than I see a new status for the item " do
       visit merchant_invoice_path(merchant1, invoice1)
       
       within "#item_#{item1.id}" do
         select("packaged", from: "status")
-
+        
         expect(current_path).to eq(merchant_invoice_path(merchant1, invoice1))
+      end
+    end
+  end
+  
+  describe "BULK DISCOUNTS" do
+    describe "User Story 6" do
+      it "displays total revenue and discounted revenue" do
+        visit merchant_invoice_path(merchant1, invoice1)
+        # Then I see the total revenue for my merchant from this invoice 
+        # (not including discounts)
+        expect(page).to have_content(invoice1.total_revenue)
+        # And I see the total discounted revenue for my merchant from this invoice 
+        # which includes bulk discounts in the calculation
+        expect(page).to have_content(invoice1.discounted_revenue)
+
       end
     end
   end
