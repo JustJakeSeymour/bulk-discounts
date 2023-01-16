@@ -25,6 +25,10 @@ class Merchants::BulkDiscountsController < ApplicationController
       render :new
     end
   end
+
+  def edit
+    
+  end
   
   def destroy
     BulkDiscount.delete(params[:id])
