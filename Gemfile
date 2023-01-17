@@ -53,6 +53,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   # Hirb gem for Active Record table rendering
   gem 'hirb'
+  gem 'table_print'
 
 end
 

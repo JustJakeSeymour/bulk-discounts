@@ -1,4 +1,6 @@
 class BulkDiscount < ApplicationRecord
   belongs_to :merchant
-  bas_many :invoice_items, through: :merchants
+  has_many :items, through: :merchant
+  has_many :invoice_items, through: :items
+  has_many :invoice_items, through: :merchant
 end
