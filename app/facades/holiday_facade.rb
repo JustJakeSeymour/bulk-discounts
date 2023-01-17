@@ -1,6 +1,9 @@
 class HolidayFacade
-  def self.dates
+  def self.holidays
     json = HolidayService.get_url
-    require 'pry'; binding.pry
+    
+    json.map do |data|
+      Holiday.new(data)
+    end
   end
 end
