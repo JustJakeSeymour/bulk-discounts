@@ -67,6 +67,10 @@ RSpec.describe 'The Merchant Invoices Show page', type: :feature do
   end
   
   describe "BULK DISCOUNTS" do
+    let!(:bulk_discount1) {create(:bulk_discount, merchant_id: merchant1.id, quantity_threshold: 10, percent_discount: 40)}
+    let!(:bulk_discount2) {create(:bulk_discount, merchant_id: merchant1.id, quantity_threshold: 2, percent_discount: 10)}
+    let!(:bulk_discount3) {create(:bulk_discount, merchant_id: merchant1.id, quantity_threshold: 5, percent_discount: 20)}
+
     describe "User Story 6" do
       it "displays total revenue and discounted revenue" do
         visit merchant_invoice_path(merchant1, invoice1)
@@ -76,7 +80,6 @@ RSpec.describe 'The Merchant Invoices Show page', type: :feature do
         # And I see the total discounted revenue for my merchant from this invoice 
         # which includes bulk discounts in the calculation
         expect(page).to have_content(invoice1.discounted_revenue)
-
       end
     end
   end
