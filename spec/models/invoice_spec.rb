@@ -22,7 +22,7 @@ RSpec.describe Invoice, type: :model do
     let!(:merchant1) {Merchant.create!(name: "Hockey Stop and Shop")}
     let!(:item1) {merchant1.items.create!(name: "Socks", description: "They're good socks.", unit_price: 1200)}
     let!(:item2) {merchant1.items.create!(name: "Tape", description: "For taping.", unit_price: 600)}
-    let!(:invoice_item1) {InvoiceItem.create!(invoice_id: invoice1.id, item_id: item1.id, quantity: 2, unit_price: 1200, status: 1)}
+    let!(:invoice_item1) {InvoiceItem.create!(invoice_id: invoice1.id, item_id: item1.id, quantity: 2, unit_price: 1200, status: 2)}
 
     let!(:invoice_item2) {InvoiceItem.create!(invoice_id: invoice1.id, item_id: item2.id, quantity: 1, unit_price: 600, status: 2)}
     let!(:invoice_item3) {InvoiceItem.create!(invoice_id: invoice2.id, item_id: item2.id, quantity: 1, unit_price: 0, status: 0)}
@@ -32,15 +32,28 @@ RSpec.describe Invoice, type: :model do
       it "total_revenue" do
         expect(invoice1.total_revenue).to eq(3000)
       end
+
+      it "discounted_revenue" do
+        invoice4 = create(:invoice, customer_id: customer.id)
+        bulk_discount1 = create(:bulk_discount, merchant_id: merchant1.id, quantity_threshold: 5, percent_discount: 20)
+        bulk_discount2 = create(:bulk_discount, merchant_id: merchant1.id, quantity_threshold: 10, percent_discount: 40)
+        invoice_item_4_1 = create(:invoice_item, invoice_id: invoice4.id, item_id: item1.id, 
+                                  quantity: 5,unit_price: 20)
+        invoice_item_4_2 = create(:invoice_item, invoice_id: invoice4.id, item_id: item2.id, 
+                                  quantity: 1, unit_price: 20)
+
+        expect(invoice4.total_revenue).to eq(120)
+        expect(invoice4.discounted_revenue).to eq(100)
+      end
     end
 
     describe 'class methods' do
-      it "self.invoice_items_pending" do
-        expect(Invoice.invoice_items_pending.include?(invoice2)).to be true
-        expect(Invoice.invoice_items_pending.include?(invoice3)).to be true
-        expect(Invoice.invoice_items_pending.include?(invoice1)).to be false
-        expect(Invoice.invoice_items_pending.first).to eq(invoice3)
-        expect(Invoice.invoice_items_pending.last).to eq(invoice2)
+      it "self.invoice_items_not_shipped" do
+        expect(Invoice.invoice_items_not_shipped.include?(invoice2)).to be true
+        expect(Invoice.invoice_items_not_shipped.include?(invoice3)).to be true
+        expect(Invoice.invoice_items_not_shipped.include?(invoice1)).to be false
+        expect(Invoice.invoice_items_not_shipped.first).to eq(invoice3)
+        expect(Invoice.invoice_items_not_shipped.last).to eq(invoice2)
       end
     end
   end

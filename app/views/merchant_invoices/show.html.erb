@@ -1,26 +1,35 @@
 <h1>Merchant Invoice Show Page</h1>
 
 
-Merchant Invoice: <%= @merchant_invoice.id %><br>
-Status:<%= @merchant_invoice.status %><br>
-Creation Date: <%=  @merchant_invoice.created_at.strftime("%A, %B %d, %Y") %><br>
-Customer Full Name: <%= @merchant_invoice.customer.first_name %> <%= @merchant_invoice.customer.last_name %><br>
+<p>Merchant Invoice: <%= @merchant_invoice.id %><br></p>
+<p>Status:<%= @merchant_invoice.status %><br></p>
+<p>Creation Date: <%=  @merchant_invoice.created_at.strftime("%A, %B %d, %Y") %><br></p>
+<p>Customer Full Name: <%= @merchant_invoice.customer.first_name %> <%= @merchant_invoice.customer.last_name %><br></p>
 <br>
-<% @merchant_invoice.items.each do |item| %>
+<h3>Invoice Items: </h3>
+<% @merchant_invoice.invoice_items.each do |invoice_item| %>
+  <div id="invoice_item_<%= invoice_item.id %>">
+    <p>Item name: <%= invoice_item.item.name %><br></p>
+  
+    <ul>
+      <li>Quantity: <%= invoice_item.quantity %><br>
+      <li>Price: <%= invoice_item.unit_price%><br>
+      <% if invoice_item.qualified_discount.any? %>
+        <li><b>Applied Discount: <%= invoice_item.qualified_discount.first.percent_discount %>%!</b></li>
+        <%= link_to "Bulk Discount Details", merchant_bulk_discount_path(invoice_item.item.merchant.id, invoice_item.qualified_discount.first.id) %>
+      <% end %>
+    </ul>
 
-Item name: <%= item.name %><br>
-<% item.invoice_items.each do |invoice_i| %>
-Quantity: <%= invoice_i.quantity %><br>
-Price: <%= invoice_i.unit_price%><br>
-
-<div id="item_<%= item.id %>">
-Invoice Item Status: <%=form_with url: invoice_item_path(invoice_i), method: :patch, local: true do |f| %><br>
-  <%= f.label :status, "status"  %>
-  <%= f.select :status, options_for_select([[:pending, "pending"], [:packaged, "packaged"], [:shipped, "shipped"]], invoice_i.status)%>
-  <%= f.submit "Submit"%>
-<% end %>
-<br>
-</div>
-<% end %>
+    <div id="item_status_<%= invoice_item.item.id %>">
+      <p>Invoice Item Status: </p>
+      <%=form_with url: invoice_item_path(invoice_item), method: :patch, local: true do |f| %><br>
+        <%= f.label :status, "status"  %>
+        <%= f.select :status, options_for_select([[:pending, "pending"], [:packaged, "packaged"], [:shipped, "shipped"]], invoice_item.status)%>
+        <%= f.submit "Submit"%>
+      <% end %>
+      <br>
+    </div>
+  </div>
 <% end %>
 Total Revenue: <%= @merchant_invoice.total_revenue %>
+Discounted Revenue: <%= @merchant_invoice.discounted_revenue %>
