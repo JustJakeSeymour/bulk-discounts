@@ -41,8 +41,25 @@ RSpec.describe "Merchant Bulk Discount Index" do
         click_button("Delete")
       end
       expect(current_path).to eq(merchant_bulk_discounts_path(merchant.id))
-
+      
       expect(page).to_not have_content("#bulk_discount_#{bulk_discount1.id}")
+    end
+  end
+  
+  describe "user story 9" do
+    it "Holidays API" do
+      # When I visit the discounts index page
+      visit merchant_bulk_discounts_path(merchant.id)
+
+      # I see a section with a header of "Upcoming Holidays"
+      expect(page).to have_content "Upcoming Holidays"
+
+      within("#upcoming_holidays") do
+        # In this section the name and date of the next 3 upcoming US holidays are listed.
+        # Use the Next Public Holidays Endpoint in the [Nager.Date API](https://date.nager.at/swagger/index.html)
+
+      end
+
     end
   end
 end
