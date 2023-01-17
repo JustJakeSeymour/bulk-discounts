@@ -50,7 +50,7 @@ RSpec.describe 'The Merchant Invoices Show page', type: :feature do
     it "I see that each invoice item status is a select field" do
       visit merchant_invoice_path(merchant1, invoice1)
       
-      within "#item_#{item1.id}" do
+      within "#item_status_#{item1.id}" do
         expect(page).to have_select(:status, selected: "pending")
       end
     end
@@ -58,7 +58,7 @@ RSpec.describe 'The Merchant Invoices Show page', type: :feature do
     it "when I click this select field than I see a new status for the item " do
       visit merchant_invoice_path(merchant1, invoice1)
       
-      within "#item_#{item1.id}" do
+      within "#item_status_#{item1.id}" do
         select("packaged", from: "status")
         
         expect(current_path).to eq(merchant_invoice_path(merchant1, invoice1))
@@ -70,6 +70,8 @@ RSpec.describe 'The Merchant Invoices Show page', type: :feature do
     let!(:bulk_discount1) {create(:bulk_discount, merchant_id: merchant1.id, quantity_threshold: 10, percent_discount: 40)}
     let!(:bulk_discount2) {create(:bulk_discount, merchant_id: merchant1.id, quantity_threshold: 2, percent_discount: 10)}
     let!(:bulk_discount3) {create(:bulk_discount, merchant_id: merchant1.id, quantity_threshold: 5, percent_discount: 20)}
+    let!(:item5) {create(:item, merchant_id: merchant1.id)}
+    let!(:invoice_item5) { create(:invoice_item, quantity: 1, unit_price: 1000, item_id: item1.id, invoice_id: invoice1.id, status: 1) }
 
     describe "User Story 6" do
       it "displays total revenue and discounted revenue" do
@@ -80,6 +82,24 @@ RSpec.describe 'The Merchant Invoices Show page', type: :feature do
         # And I see the total discounted revenue for my merchant from this invoice 
         # which includes bulk discounts in the calculation
         expect(page).to have_content(invoice1.discounted_revenue)
+      end
+    end
+    
+    describe "User Story 7" do
+      it "link to bulk discount show page from invoice item" do
+        visit merchant_invoice_path(merchant1, invoice1)
+
+        within("#invoice_item_#{invoice_item1.id}") do
+          expect(page).to have_content("Applied Discount: #{bulk_discount2.percent_discount}%!")
+        end
+
+        within("#invoice_item_#{invoice_item2.id}") do
+          expect(page).to have_content("Applied Discount: #{bulk_discount3.percent_discount}%!")
+        end
+        
+        within("#invoice_item_#{invoice_item5.id}") do
+          expect(page).to_not have_content("Applied Discount:")
+        end
       end
     end
   end
