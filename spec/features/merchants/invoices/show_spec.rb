@@ -88,7 +88,7 @@ RSpec.describe 'The Merchant Invoices Show page', type: :feature do
     describe "User Story 7" do
       it "link to bulk discount show page from invoice item" do
         visit merchant_invoice_path(merchant1, invoice1)
-
+        
         within("#invoice_item_#{invoice_item1.id}") do
           expect(page).to have_content("Applied Discount: #{bulk_discount2.percent_discount}%!")
           expect(page).to have_link("Bulk Discount Details")
@@ -97,14 +97,16 @@ RSpec.describe 'The Merchant Invoices Show page', type: :feature do
           expect(current_path).to eq merchant_bulk_discount_path(merchant1, bulk_discount2)
         end
         
+        visit merchant_invoice_path(merchant1, invoice1)
         within("#invoice_item_#{invoice_item2.id}") do
           expect(page).to have_content("Applied Discount: #{bulk_discount3.percent_discount}%!")
           expect(page).to have_link("Bulk Discount Details")
-
+          
           click_link "Bulk Discount Details"
           expect(current_path).to eq merchant_bulk_discount_path(merchant1, bulk_discount3)
         end
         
+        visit merchant_invoice_path(merchant1, invoice1)
         within("#invoice_item_#{invoice_item5.id}") do
           expect(page).to_not have_content("Applied Discount:")
           expect(page).to_not have_link("Bulk Discount Details")

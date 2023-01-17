@@ -16,6 +16,7 @@
       <li>Price: <%= invoice_item.unit_price%><br>
       <% if invoice_item.qualified_discount.any? %>
         <li><b>Applied Discount: <%= invoice_item.qualified_discount.first.percent_discount %>%!</b></li>
+        <%= link_to "Bulk Discount Details", merchant_bulk_discount_path(invoice_item.item.merchant.id, invoice_item.qualified_discount.first.id) %>
       <% end %>
     </ul>
 
