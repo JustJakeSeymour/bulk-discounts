@@ -1,6 +1,7 @@
 class Merchants::BulkDiscountsController < ApplicationController
   def index
     @merchant = Merchant.find(params[:merchant_id])
+    @next_three_holidays = Rails.cache.fetch('holidays', expires_in: 60.minutes) { HolidayFacade.holidays }
   end
   
   def show

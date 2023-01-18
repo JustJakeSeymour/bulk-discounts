@@ -48,6 +48,9 @@ RSpec.describe "Merchant Bulk Discount Index" do
   
   describe "user story 9" do
     it "Holidays API" do
+      holiday1 = HolidayFacade.holidays[0]
+      holiday2 = HolidayFacade.holidays[1]
+      holiday3 = HolidayFacade.holidays[2]
       # When I visit the discounts index page
       visit merchant_bulk_discounts_path(merchant.id)
 
@@ -56,8 +59,13 @@ RSpec.describe "Merchant Bulk Discount Index" do
 
       within("#upcoming_holidays") do
         # In this section the name and date of the next 3 upcoming US holidays are listed.
-        # Use the Next Public Holidays Endpoint in the [Nager.Date API](https://date.nager.at/swagger/index.html)
 
+        expect(page).to have_content(holiday1.name)
+        expect(page).to have_content(holiday1.date.to_date)
+        expect(page).to have_content(holiday2.name)
+        expect(page).to have_content(holiday2.date.to_date)
+        expect(page).to have_content(holiday3.name)
+        expect(page).to have_content(holiday3.date.to_date)
       end
 
     end
