@@ -140,11 +140,17 @@ RSpec.describe Merchant, type: :model do
       let!(:transaction3) { Transaction.create!(result: "success", credit_card_number: 4832483429348594, credit_card_expiration_date: "", invoice: invoice3 ) }
       let!(:transaction4) { Transaction.create!(result: "success", credit_card_number: 4832483429348594, credit_card_expiration_date: "", invoice: invoice4 ) }
       let!(:transaction5) { Transaction.create!(result: "success", credit_card_number: 4832483429348594, credit_card_expiration_date: "", invoice: invoice5 ) }
+
       it 'returns an array of the top five merchant items by revenue' do
         expect(merchant1.top_five_items_ordered).to eq([item1, item2, item3, item4, item6])
       end
+
       it 'top_customers' do
         expect(merchant1.top_customers).to eq([customer3, customer2, customer1, customer4, customer5])
+      end
+
+      it "ready_to_ship" do
+        expect(merchant1.ready_to_ship).to eq([item2, item2, item4, item4, item6, item8, item9])
       end
     end
     

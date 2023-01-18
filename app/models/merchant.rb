@@ -38,8 +38,7 @@ class Merchant < ApplicationRecord
   end
 
   def ready_to_ship
-    items
-    .joins(:invoice_items)
+    items.joins(:invoice_items)
     .select('items.*, invoice_items.invoice_id, invoice_items.status as invoice_item_status')
     .where('invoice_items.status = ?', 1)
     .order(:created_at)
