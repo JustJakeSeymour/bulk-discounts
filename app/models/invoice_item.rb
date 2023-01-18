@@ -4,6 +4,9 @@ class InvoiceItem < ApplicationRecord
   belongs_to :merchant, optional: true
   has_many :bulk_discounts, through: :item
 
+  validates_presence_of :unit_price
+  validates_presence_of :quantity
+
 
   enum status: ['pending', 'packaged', 'shipped']
 
@@ -21,6 +24,6 @@ class InvoiceItem < ApplicationRecord
   end
 
   def total_item_discount
-    discounted_price * quantity
+      discounted_price * quantity
   end
 end

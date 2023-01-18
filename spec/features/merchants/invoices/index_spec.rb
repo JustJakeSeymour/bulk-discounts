@@ -9,10 +9,10 @@ RSpec.describe 'The Merchant Invoices Index page', type: :feature do
   let!(:item3) { Item.create!(name: "Pizza", description: "Cheezy Delicious", unit_price: 1749, merchant: merchant1) }
   let!(:item4) { Item.create!(name: "Penguins", description: "Exotic pet", unit_price: 100005, merchant: merchant1) }
 
-  let!(:invoice_item1) { InvoiceItem.create!(unit_price: 1000, item: item1, invoice: invoice1, status: 0) }
-  let!(:invoice_item2) { InvoiceItem.create!(unit_price: 1200, item: item2, invoice: invoice1, status: 1) }
-  let!(:invoice_item3) { InvoiceItem.create!(unit_price: 1749, item: item3, invoice: invoice2, status: 2) }
-  let!(:invoice_item4) { InvoiceItem.create!(unit_price: 100005, item: item4, invoice: invoice3, status: 1) }
+  let!(:invoice_item1) { InvoiceItem.create!(unit_price: 1000, item: item1, invoice: invoice1, status: 0, quantity: 1) }
+  let!(:invoice_item2) { InvoiceItem.create!(unit_price: 1200, item: item2, invoice: invoice1, status: 1, quantity: 1) }
+  let!(:invoice_item3) { InvoiceItem.create!(unit_price: 1749, item: item3, invoice: invoice2, status: 2, quantity: 1) }
+  let!(:invoice_item4) { InvoiceItem.create!(unit_price: 100005, item: item4, invoice: invoice3, status: 1, quantity: 1) }
 
   let!(:customer1) {Customer.create!(first_name: "Bob", last_name: "Bobbert")}
   let!(:customer2) {Customer.create!(first_name: "Chad", last_name: "Chaddert")}
