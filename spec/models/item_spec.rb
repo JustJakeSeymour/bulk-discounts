@@ -29,6 +29,10 @@ RSpec.describe Item, type: :model do
       it "top_selling_day" do
         expect(item1.top_selling_day.strftime("%m/%d/%Y")).to eq("06/26/2022")
       end
+
+      it "invoice_date" do
+        expect(item1.invoice_date).to eq("Sunday, June 26, 2022")
+      end
     end
   end
 end
